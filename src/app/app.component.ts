@@ -1,3 +1,4 @@
+import { Server } from './interface/server';
 import { Status } from './enum/status.enum';
 import { DataState } from './enum/data-state.enum';
 import { CustomResponse } from './interface/custom-response';
@@ -12,6 +13,7 @@ import {
 } from 'rxjs';
 import { ServerService } from './service/server.service';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -85,5 +87,35 @@ export class AppComponent implements OnInit {
           return of({ dataState: DataState.ERROR_STATE, error });
         })
       );
+  }
+
+  saveServer(serverForm: NgForm): void {
+    this.appState$ = this.serverService.save$(serverForm.value as Server).pipe(
+      map((response) => {
+        this.dataSubject.next({
+          ...response,
+          data: {
+            servers: [
+              response.data.server,
+              ...this.dataSubject.value.data.servers,
+            ],
+          },
+        });
+        document.getElementById('closeModal').click();
+        serverForm.resetForm({ status: this.Status.SERVER_DOWN });
+        return {
+          dataState: DataState.LOADED_STATE,
+          appData: this.dataSubject.value,
+        };
+      }),
+      startWith({
+        dataState: DataState.LOADED_STATE,
+        appData: this.dataSubject.value,
+      }),
+      catchError((error: string) => {
+        this.filterSubject.next('');
+        return of({ dataState: DataState.ERROR_STATE, error: error });
+      })
+    );
   }
 }
