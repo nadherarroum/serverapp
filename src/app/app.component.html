@@ -95,7 +95,10 @@
                   </span>
                 </td>
                 <td>
-                  <a style="cursor: pointer">
+                  <a
+                    (click)="pingServer(server.ipAddress)"
+                    style="cursor: pointer"
+                  >
                     <i
                       *ngIf="
                         (filterSubject$ | async) === '' ||

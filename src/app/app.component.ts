@@ -54,7 +54,10 @@ export class AppComponent implements OnInit {
         );
         this.dataSubject.value.data.servers[index] = response.data.server;
         this.filterSubject.next(''); // after done, stop the loading
-        return { dataState: DataState.LOADED_STATE, appData: response };
+        return {
+          dataState: DataState.LOADED_STATE,
+          appData: this.dataSubject.value,
+        };
       }),
       startWith({
         dataState: DataState.LOADED_STATE,
