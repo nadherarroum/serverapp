@@ -22,7 +22,6 @@
             <span>
               <select
                 name="status"
-                ngModel="ALL"
                 class="btn btn-info"
                 style="height: 32.91px"
               >
@@ -35,52 +34,64 @@
         </div>
       </div>
       <br />
-
       <ng-container>
-        <table class="table table-striped table-hover" id="servers">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>IP Address</th>
-              <th>Name</th>
-              <th>Memory</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Ping</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <img src="" width="40" height="40" />
-              </td>
-              <td>ipAddress</td>
-              <td>name</td>
-              <td>memory</td>
-              <td>type</td>
-              <td>
-                <span class="badge"> </span>
-              </td>
-              <td>
-                <a style="cursor: pointer">
-                  <i class="material-icons" title="Ping server">&#xe328; </i>
-                  <i class="fa fa-spinner fa-spin" style="font-size: 24px"></i>
-                </a>
-              </td>
-              <td>
-                <a class="delete" data-toggle="modal" style="cursor: pointer"
-                  ><i
-                    class="material-icons"
-                    data-toggle="tooltip"
-                    title="Delete"
-                    >&#xE872;</i
-                  ></a
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <ng-container>
+          <div class="col-md12 single-note-item text-center">
+            <div class="spinner-border text-info" role="status"></div>
+          </div>
+        </ng-container>
+        <ng-container>
+          <table class="table table-striped table-hover" id="servers">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>IP Address</th>
+                <th>Name</th>
+                <th>Memory</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Ping</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <img src="" width="40" height="40" />
+                </td>
+                <td>ipAddress</td>
+                <td>name</td>
+                <td>memory</td>
+                <td>type</td>
+                <td>
+                  <span class="badge"> </span>
+                </td>
+                <td>
+                  <a style="cursor: pointer">
+                    <i class="material-icons" title="Ping server">&#xe328; </i>
+                    <i
+                      class="fa fa-spinner fa-spin"
+                      style="font-size: 24px"
+                    ></i>
+                  </a>
+                </td>
+                <td>
+                  <a class="delete" data-toggle="modal" style="cursor: pointer">
+                    <i
+                      class="material-icons"
+                      data-toggle="tooltip"
+                      title="Delete"
+                      >&#xE872;
+                    </i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-container>
+          <div class="alert-danger">error</div>
+        </ng-container>
       </ng-container>
     </div>
   </div>
@@ -90,7 +101,7 @@
 <div id="addEmployeeModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form #serverFor>
+      <form>
         <div class="modal-header">
           <h4 class="modal-title">Add Server</h4>
           <button
@@ -105,23 +116,11 @@
         <div class="modal-body">
           <div class="form-group">
             <label>IP</label>
-            <input
-              type="text"
-              ngModel
-              name="ipAddress"
-              class="form-control"
-              required
-            />
+            <input type="text" name="ipAddress" class="form-control" required />
           </div>
           <div class="form-group">
             <label>Name</label>
-            <input
-              type="text"
-              ngModel
-              name="name"
-              class="form-control"
-              required
-            />
+            <input type="text" name="name" class="form-control" required />
           </div>
           <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
@@ -129,7 +128,6 @@
                 <label>Memory</label>
                 <input
                   type="text"
-                  ngModel
                   name="memory"
                   class="form-control"
                   required
@@ -139,25 +137,13 @@
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
               <div class="form-group">
                 <label>Type</label>
-                <input
-                  type="text"
-                  ngModel
-                  name="type"
-                  class="form-control"
-                  required
-                />
+                <input type="text" name="type" class="form-control" required />
               </div>
             </div>
           </div>
           <div class="form-group">
             <label>Status</label>
-            <select
-              name="status"
-              ngModel="SERVER_DOWN"
-              class="form-control"
-              name="status"
-              required
-            >
+            <select name="status" class="form-control" name="status" required>
               <option value="SERVER_UP">SERVER UP</option>
               <option value="SERVER_DOWN">SERVER DOWN</option>
             </select>
