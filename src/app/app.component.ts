@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   appState$: Observable<AppState<CustomResponse>>;
 
   readonly DataState = DataState;
-  readonly Status = Status;
+  Status = Status;
 
   private filterSubject = new BehaviorSubject<string>('');
   private dataSubject = new BehaviorSubject<CustomResponse>(null);
@@ -68,5 +68,22 @@ export class AppComponent implements OnInit {
         return of({ dataState: DataState.ERROR_STATE, error: error });
       })
     );
+  }
+
+  filterServers(status: Status): void {
+    this.appState$ = this.serverService
+      .filter$(status, this.dataSubject.value)
+      .pipe(
+        map((response) => {
+          return { dataState: DataState.LOADED_STATE, appData: response };
+        }),
+        startWith({
+          dataState: DataState.LOADED_STATE,
+          appData: this.dataSubject.value,
+        }),
+        catchError((error: string) => {
+          return of({ dataState: DataState.ERROR_STATE, error });
+        })
+      );
   }
 }

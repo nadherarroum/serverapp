@@ -21,7 +21,9 @@
 
             <span>
               <select
+                (ngModelChange)="filterServers($event)"
                 name="status"
+                ngModel="ALL"
                 class="btn btn-info"
                 style="height: 32.91px"
               >
