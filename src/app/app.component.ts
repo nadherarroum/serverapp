@@ -24,12 +24,15 @@ export class AppComponent implements OnInit {
   appState$: Observable<AppState<CustomResponse>>;
 
   readonly DataState = DataState;
-  Status = Status;
+  readonly Status = Status;
 
-  private filterSubject = new BehaviorSubject<string>('');
   private dataSubject = new BehaviorSubject<CustomResponse>(null);
 
+  private filterSubject = new BehaviorSubject<string>('');
   filterSubject$ = this.filterSubject.asObservable();
+
+  private isLoading = new BehaviorSubject<Boolean>(false);
+  isLoading$ = this.isLoading.asObservable();
 
   constructor(private serverService: ServerService) {}
 
@@ -37,7 +40,13 @@ export class AppComponent implements OnInit {
     this.appState$ = this.serverService.servers$.pipe(
       map((response) => {
         this.dataSubject.next(response); // save response on data subject
-        return { dataState: DataState.LOADED_STATE, appData: response };
+        return {
+          dataState: DataState.LOADED_STATE,
+          appData: {
+            ...response,
+            data: { servers: response.data.servers.reverse() },
+          },
+        };
       }),
       startWith({ dataState: DataState.LOADING_STATE }),
       catchError((error: string) => {
@@ -90,6 +99,8 @@ export class AppComponent implements OnInit {
   }
 
   saveServer(serverForm: NgForm): void {
+    this.isLoading.next(true);
+
     this.appState$ = this.serverService.save$(serverForm.value as Server).pipe(
       map((response) => {
         this.dataSubject.next({
@@ -102,6 +113,7 @@ export class AppComponent implements OnInit {
           },
         });
         document.getElementById('closeModal').click();
+        this.isLoading.next(false);
         serverForm.resetForm({ status: this.Status.SERVER_DOWN });
         return {
           dataState: DataState.LOADED_STATE,
@@ -113,7 +125,7 @@ export class AppComponent implements OnInit {
         appData: this.dataSubject.value,
       }),
       catchError((error: string) => {
-        this.filterSubject.next('');
+        this.isLoading.next(false);
         return of({ dataState: DataState.ERROR_STATE, error: error });
       })
     );

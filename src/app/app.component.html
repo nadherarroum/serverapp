@@ -145,7 +145,7 @@
 <div id="addEmployeeModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form>
+      <form #serverForm="ngForm" (ngSubmit)="saveServer(serverForm)">
         <div class="modal-header">
           <h4 class="modal-title">Add Server</h4>
           <button
@@ -160,17 +160,30 @@
         <div class="modal-body">
           <div class="form-group">
             <label>IP</label>
-            <input type="text" name="ipAddress" class="form-control" required />
+            <input
+              ngModel
+              type="text"
+              name="ipAddress"
+              class="form-control"
+              required
+            />
           </div>
           <div class="form-group">
             <label>Name</label>
-            <input type="text" name="name" class="form-control" required />
+            <input
+              ngModel
+              type="text"
+              name="name"
+              class="form-control"
+              required
+            />
           </div>
           <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
               <div class="form-group">
                 <label>Memory</label>
                 <input
+                  ngModel
                   type="text"
                   name="memory"
                   class="form-control"
@@ -181,13 +194,25 @@
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
               <div class="form-group">
                 <label>Type</label>
-                <input type="text" name="type" class="form-control" required />
+                <input
+                  ngModel
+                  type="text"
+                  name="type"
+                  class="form-control"
+                  required
+                />
               </div>
             </div>
           </div>
           <div class="form-group">
             <label>Status</label>
-            <select name="status" class="form-control" name="status" required>
+            <select
+              ngModel="SERVER_DOWN"
+              name="status"
+              class="form-control"
+              name="status"
+              required
+            >
               <option value="SERVER_UP">SERVER UP</option>
               <option value="SERVER_DOWN">SERVER DOWN</option>
             </select>
@@ -202,10 +227,14 @@
           >
             Cancel
           </button>
-          <button type="submit" class="btn btn-success">
-            <i class="fas fa-spinner fa-spin"></i>
-            <span>Saving...</span>
-            <span>Add</span>
+          <button
+            type="submit"
+            [disabled]="serverForm.invalid || (isLoading$ | async)"
+            class="btn btn-success"
+          >
+            <i *ngIf="isLoading$ | async" class="fas fa-spinner fa-spin"></i>
+            <span *ngIf="isLoading$ | async">Saving...</span>
+            <span *ngIf="!(isLoading$ | async)">Add</span>
           </button>
         </div>
       </form>
